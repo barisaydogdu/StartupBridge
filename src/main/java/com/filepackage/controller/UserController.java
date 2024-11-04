@@ -6,25 +6,20 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
-@AllArgsConstructor
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserController {
-//    @Autowired
+
+    @Autowired
   private UserService userService;
 
-//    @GetMapping
-//    public List<UserDto> getAllUsers() {
-//        return userService.getAllUsers();
-//    }
+
     @GetMapping
-    public ResponseEntity<List<UserDto>> getAllUsers()
-    {
-    List<UserDto> friendshipDtos= userService.getAllUsers();
-    return ResponseEntity.ok(friendshipDtos);
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<UserDto> friendshipDtos = userService.getAllUsers();
+        return ResponseEntity.ok(friendshipDtos);
     }
     @PostMapping
     public UserDto addUser(@RequestBody UserDto userDto) {

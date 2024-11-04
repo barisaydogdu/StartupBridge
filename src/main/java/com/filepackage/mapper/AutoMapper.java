@@ -1,6 +1,8 @@
 package com.filepackage.mapper;
 
-public class AutoMapper {
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+
     @Service
     public class AutoMapper {
         private final ModelMapper modelMapper;
