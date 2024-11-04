@@ -1,7 +1,7 @@
 package com.filepackage.service.impl;
 
 import com.filepackage.dto.UserDto;
-import com.filepackage.repository.UserRepository;
+import com.filepackage.model.User;
 import com.filepackage.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
