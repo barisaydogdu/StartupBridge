@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectDto {
-
     private Long project_id;
 
     private Integer entrepreneur_id;

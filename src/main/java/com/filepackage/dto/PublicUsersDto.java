@@ -11,17 +11,17 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class   UserDto {
-    private Long id; // Optional, if you need it for updates
-
-    private String name;
+public class PublicUsersDto {
+    private Long user_id;
 
     private String email;
 
+    private String username;
+
     private String password;
 
-    private String role; // Optional, for user roles like "USER", "ADMIN"
+    private String role;
 
-    private LocalDateTime createdAt; // This could be read-only in the DTO
+    private LocalDateTime created_at;
 
 }
