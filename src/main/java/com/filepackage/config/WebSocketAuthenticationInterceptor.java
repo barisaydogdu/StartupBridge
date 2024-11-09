@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Principal;
-
+//compoonent
 @Component
 public class WebSocketAuthenticationInterceptor implements ChannelInterceptor {
 
@@ -26,7 +26,7 @@ public class WebSocketAuthenticationInterceptor implements ChannelInterceptor {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
     }
-
+//test
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
