@@ -57,13 +57,19 @@ public class JwtService {
     public String generateToken(User user)
     {
         String token=Jwts.builder()
-                .subject(user.getUsername())
+                .subject(user.getUsername()) //kullanici adini ekle
+                .claim("id",user.getId()) //kullanici idsini ekle
                 .issuedAt(new Date(System.currentTimeMillis()))//Token oluşturma tarihi
                 .expiration(new Date(System.currentTimeMillis()+24*60*60*1000))//Son kullanma tarihi 1 gün
                 .signWith(getSigninKey())//Token imzalama
                 .compact();// Token oluşturma
         return token;
     }
+
+    public Long extractUserId(String token) {
+        return extractClaim(token, claims -> claims.get("id", Long.class));
+    }
+
     //İmza anahtarını al
     private SecretKey getSigninKey()
     {
