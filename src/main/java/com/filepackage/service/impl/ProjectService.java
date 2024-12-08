@@ -9,8 +9,13 @@ import com.filepackage.mapper.AutoMapper;
 import com.filepackage.repository.IProjectRepository;
 import com.filepackage.repository.IUserRepository;
 import com.filepackage.service.IProjectService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,9 +26,10 @@ public class ProjectService  implements IProjectService<ProjectDto,Long>{
     AutoMapper autoMapper;
     private IProjectRepository projectRepository;
 
+
     @Autowired
     public ProjectService(IProjectRepository projectRepository) {
-        this.projectRepository= projectRepository;
+        this.projectRepository = projectRepository;
     }
 
     @Override

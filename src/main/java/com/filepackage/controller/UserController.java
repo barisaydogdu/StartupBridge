@@ -1,6 +1,8 @@
 package com.filepackage.controller;
 
 import com.filepackage.dto.UserDto;
+import com.filepackage.entity.User;
+import com.filepackage.repository.IUserRepository;
 import com.filepackage.service.interfaces.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +14,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 public class UserController {
 
     @Autowired
   private UserService userService;
+    private  final  IUserRepository userRepository;
+
+    public UserController(IUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
 
     @GetMapping
@@ -44,6 +52,13 @@ public class UserController {
     public ResponseEntity<UserDto> updateUser (@PathVariable("id") Long userId, @RequestBody UserDto updatedUser) {
         UserDto userDto=userService.updateUser(userId,updatedUser);
         return ResponseEntity.ok(userDto);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUserq() {
+        // Mevcut tüm kullanıcıları getir
+        List<User> users = userRepository.findAll();
+        return ResponseEntity.ok(users);
     }
 
 }

@@ -13,6 +13,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/public_users")
+@CrossOrigin(origins = "http://localhost:3000/")
+
 public class PublicUserController {
     @Autowired
     private PublicUserService publicUserService;
