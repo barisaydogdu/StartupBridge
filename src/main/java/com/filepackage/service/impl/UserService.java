@@ -6,7 +6,6 @@ import com.filepackage.entity.Role;
 import com.filepackage.mapper.AutoMapper;
 import com.filepackage.entity.User;
 import com.filepackage.repository.IUserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -60,7 +59,7 @@ public class UserService implements com.filepackage.service.interfaces.UserServi
     public UserDto updateUser(Long id, UserDto updatedUser) {
         User user= userRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("User is not exist with given id:)" + id));
-        user.setName(updatedUser.getName());
+        user.setName(updatedUser.getUsername());
         user.setEmail(updatedUser.getEmail());
         user.setPassword(updatedUser.getPassword());
         user.setRole(Role.valueOf(updatedUser.getRole()));

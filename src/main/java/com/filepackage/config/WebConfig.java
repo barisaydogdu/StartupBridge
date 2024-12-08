@@ -13,16 +13,25 @@ import java.util.List;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    //CORS yapılandırmasını sağlamak için bir WebMvcConfigurer döner
+   /* //CORS yapılandırmasını sağlamak için bir WebMvcConfigurer döner
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/ws/**")  // WebSocket endpoint için CORS izinleri
-                        .allowedOrigins("http://localhost:8080", "http://localhost:5500", "http://127.0.0.1:5500") // izin verilen origin
+                        .allowedOrigins("http://localhost:8080", "http://localhost:5500", "http://127.0.0.1:5500","http://localhost:3000") // izin verilen origin
                         .allowedMethods("GET", "POST", "PUT", "DELETE"); // izin verilen metodlar
             }
         };
+    }*/
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**") // Tüm endpointler için
+                .allowedOrigins("http://localhost:3000/") // İzin verilen origin
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // İzin verilen HTTP metodları
+                .allowedHeaders("*") // Tüm başlıklar
+                .allowCredentials(true); // Kimlik bilgilerini destekler
+         }
     }
-}
+
