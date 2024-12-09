@@ -1,5 +1,6 @@
 package com.filepackage.dto;
 
+import com.filepackage.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,4 +21,5 @@ public class EntrepreneurDto {
     private String bio;
     private String phoneNumber;
     private Boolean phoneVisibility;
+    private Long userId;
 }

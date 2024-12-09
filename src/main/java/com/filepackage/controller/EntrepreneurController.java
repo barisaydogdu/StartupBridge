@@ -28,6 +28,7 @@ public class EntrepreneurController {
 
     @PostMapping
     public ResponseEntity<EntrepreneurDto> addEntrepreneur(@RequestBody EntrepreneurDto entrepreneurDto) {
+        // Giriş yapmış kullanıcının kimliği otomatik olarak user_id sütununa eklenir == service katmaninda ekliyoruz bunu
         EntrepreneurDto savedEntrepreneur = entrepreneurService.createEntrepreneur(entrepreneurDto);
         return new ResponseEntity<>(savedEntrepreneur, HttpStatus.CREATED);
     }

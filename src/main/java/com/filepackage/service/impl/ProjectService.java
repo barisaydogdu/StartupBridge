@@ -3,6 +3,7 @@ package com.filepackage.service.impl;
 import com.filepackage.Exception.ResourceNotFoundException;
 import com.filepackage.dto.ProjectDto;
 import com.filepackage.dto.UserDto;
+import com.filepackage.entity.Entrepreneur;
 import com.filepackage.entity.Project;
 import com.filepackage.entity.User;
 import com.filepackage.mapper.AutoMapper;
@@ -72,8 +73,11 @@ public class ProjectService  implements IProjectService<ProjectDto,Long>{
 
     @Override
     public ProjectDto createProject(ProjectDto projectDto) {
+        Entrepreneur entrepreneur = new Entrepreneur();
         //önce entitye sonra tekrardan dtoya çeviriyoruz
         Project project = autoMapper.convertToEntity(projectDto,Project.class);
+        project.setEntrepreneur_id(entrepreneur.getEntrepreneurId());
+       // project.setEntrepreneur_id(1);
         Project savedProject = projectRepository.save(project);
         return  autoMapper.convertToDto(savedProject,ProjectDto.class);
     }

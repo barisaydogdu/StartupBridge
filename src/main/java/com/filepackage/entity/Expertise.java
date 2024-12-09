@@ -23,6 +23,6 @@ public class Expertise {
         private Integer entrepreneur_id;
 
         @Column(name = "skill_name")
-        private  String skill_name;
+        private String skill_name;
 
 }
