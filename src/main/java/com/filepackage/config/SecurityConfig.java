@@ -2,11 +2,13 @@ package com.filepackage.config;
 
 import com.filepackage.Exception.CustomExceptionHandler;
 import com.filepackage.filter.JwtAuthenticationFilter;
+import com.filepackage.service.impl.JwtService;
 import com.filepackage.service.impl.UserDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -26,11 +28,13 @@ public class SecurityConfig {
 
     private final UserDetailServiceImpl userDetailService;
     private JwtAuthenticationFilter authenticationFilter;
+    private JwtService jwtService;
     @Autowired
     private CustomExceptionHandler accessDeniedHandler;
-    public SecurityConfig(UserDetailServiceImpl userDetailService, JwtAuthenticationFilter authenticationFilter) {
+    public SecurityConfig(UserDetailServiceImpl userDetailService, JwtAuthenticationFilter authenticationFilter, JwtService jwtService) {
         this.userDetailService = userDetailService;
         this.authenticationFilter = authenticationFilter;
+        this.jwtService = jwtService;
     }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception
@@ -38,9 +42,13 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        req->req.requestMatchers("/login/**","/register/**","/ws/**","/api/users/**","/projects","/entrepreneurs")
+
+                        req->req.requestMatchers("/login/**","/register/**","/ws/**","/api/users/**","/projects","/entrepreneurs/**")
+                    //    req->req.requestMatchers("http://localhost:3000/**")
                                 .permitAll()
                                 .requestMatchers("/admin_only/**","/app/**").hasAnyAuthority("ROLE_ADMIN")
+                                //.requestMatchers(HttpMethod.PUT,"/entrepreneurs/**/edit").authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/entrepreneurs/**").authenticated() // Güncelleme sadece giriş yapmış kullanıcılar
                                 .anyRequest()
                                 .authenticated()//diğer tüm istekler için doğrulama gerekir
                 )

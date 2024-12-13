@@ -1,5 +1,6 @@
 package com.filepackage.service.impl;
 
+import com.filepackage.Exception.AccessDeniedException;
 import com.filepackage.Exception.ResourceNotFoundException;
 import com.filepackage.dto.EntrepreneurDto;
 import com.filepackage.entity.Entrepreneur;
@@ -100,6 +101,19 @@ public class EntrepreneurService implements IEntrepreneurService {
     public EntrepreneurDto update(Long entrepreneurId, EntrepreneurDto updatedEntrepreneurDto) {
         Entrepreneur entrepreneur = entrepreneurRepository.findById(entrepreneurId)
                 .orElseThrow(() -> new ResourceNotFoundException("Entrepreneur not found with ID: " + entrepreneurId));
+        // su anki oturumdan kullaniciyi al
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null || !authentication.isAuthenticated()) {
+            throw new AccessDeniedException("Not authenticated");
+        }
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        User currentUser = userRepository.findByName(userDetails.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+            // kullanici sadece kendi profilini guncelleyebilir
+        if (!entrepreneur.getUser().getId().equals(currentUser.getId())){
+            throw new AccessDeniedException("You can only update your own profile");
+        }
 
         entrepreneur.setFirstName(updatedEntrepreneurDto.getFirstName());
         entrepreneur.setLastName(updatedEntrepreneurDto.getLastName());

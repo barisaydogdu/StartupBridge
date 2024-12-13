@@ -54,7 +54,7 @@ public class ExperienceService implements IExperienceService<ExperienceDto, Long
 
         experience.setCompany_name(updatedExperience.getCompany_name());
         experience.setExperience_id(updatedExperience.getExperience_id());
-        experience.setDescription(updatedExperience.getExperience_id());
+        experience.setDescription(String.valueOf(updatedExperience.getExperience_id()));
         experience.setPosition(updatedExperience.getPosition());
         experience.setEnterpreneur_id(updatedExperience.getEntrepreneur_id());
         experience.setDuration_years(updatedExperience.getDuration_years());

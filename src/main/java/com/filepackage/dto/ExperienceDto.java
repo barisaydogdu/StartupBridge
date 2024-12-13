@@ -26,7 +26,7 @@ public class ExperienceDto {
 
     private String description;
 
-    private LocalDateTime duration_years;
+    private Integer duration_years;
 
     private LocalDateTime created_at;
 }

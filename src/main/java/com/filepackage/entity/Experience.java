@@ -32,10 +32,10 @@ public class Experience {
     private String position;
 
     @Column(name = "description")
-    private Long description;
+    private String description;
 
     @Column(name = "duration_years")
-    private LocalDateTime duration_years;
+    private Integer duration_years;
 
     @Column(name = "created_at")
     private LocalDateTime created_at;
@@ -44,5 +44,6 @@ public class Experience {
     protected void onCreate() {
         this.created_at = LocalDateTime.now();
     }
+
 
 }
