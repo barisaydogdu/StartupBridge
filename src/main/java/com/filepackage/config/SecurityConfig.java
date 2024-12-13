@@ -43,8 +43,14 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
 
-                        req->req.requestMatchers("/login/**","/register/**","/ws/**","/api/users/**","/projects","/entrepreneurs/**")
-                    //    req->req.requestMatchers("http://localhost:3000/**")
+                        req->req.requestMatchers(
+                                "/login/**",
+                                        "/register/**",
+                                        "/ws/**",
+                                        "/api/users/**",
+                                        "/projects",
+                                        "/entrepreneurs/**",
+                                        "/investors/**")
                                 .permitAll()
                                 .requestMatchers("/admin_only/**","/app/**").hasAnyAuthority("ROLE_ADMIN")
                                 //.requestMatchers(HttpMethod.PUT,"/entrepreneurs/**/edit").authenticated()

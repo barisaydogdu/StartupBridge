@@ -45,7 +45,7 @@ public class InvestorsController {
     }
 
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/edit")
     public ResponseEntity<InvestorsDto> updateInvestor(@PathVariable("id") Long investorId, @RequestBody InvestorsDto updatedInvestor) {
         InvestorsDto investorsDto = investorsService.update(investorId, updatedInvestor);
         return ResponseEntity.ok(investorsDto);

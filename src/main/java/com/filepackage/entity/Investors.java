@@ -19,7 +19,7 @@ public class Investors {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "investor_id")
-    private Long investor_id;
+    private Integer investor_id;
 
     @Column(name = "first_name")
     private String first_name;
@@ -56,4 +56,8 @@ public class Investors {
         this.created_at = LocalDateTime.now();
     }
 
+    //baska bir entity oldugu icin iliski kurmamiz gerekiyor bir enterpreterin bir useri olabilir gibi bir mantik var
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false) // `users` tablosundaki user_id ile ilişkilendirilir
+    private User user;
 }
