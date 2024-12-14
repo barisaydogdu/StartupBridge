@@ -45,10 +45,17 @@ public class Project {
     @Column(name = "created_at")
     private LocalDateTime created_at;
 
+  /*  @OneToOne
+    @JoinColumn(name = "user_id", nullable = false) // `users` tablosundaki user_id ile ilişkilendirilir
+    private User user;*/
+
     @PrePersist
     protected void onCreate() {
         this.created_at = LocalDateTime.now();
     }
 
+    /*@ManyToOne
+    @JoinColumn(name = "entrepreneur_id", nullable = false)
+    private Entrepreneur entrepreneur; */
 }
 

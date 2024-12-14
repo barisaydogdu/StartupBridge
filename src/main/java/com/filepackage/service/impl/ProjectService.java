@@ -59,7 +59,7 @@ public class ProjectService  implements IProjectService<ProjectDto,Long>{
     public ProjectDto update(Long projectId, ProjectDto updatedProject) {
         Project project= projectRepository.findById(projectId).orElseThrow(() ->
                 new ResourceNotFoundException("Project is not exist with given id:)" + projectId));
-        project.setEntrepreneur_id(updatedProject.getEntrepreneur_id());
+       // project.setEntrepreneur_id(updatedProject.getEntrepreneur_id());
         project.setProject_name(updatedProject.getProject_name());
         project.setShort_description(updatedProject.getShort_description());
         project.setTarget_sector(updatedProject.getTarget_sector());
@@ -73,10 +73,11 @@ public class ProjectService  implements IProjectService<ProjectDto,Long>{
 
     @Override
     public ProjectDto createProject(ProjectDto projectDto) {
+
         Entrepreneur entrepreneur = new Entrepreneur();
         //önce entitye sonra tekrardan dtoya çeviriyoruz
         Project project = autoMapper.convertToEntity(projectDto,Project.class);
-        project.setEntrepreneur_id(entrepreneur.getEntrepreneurId());
+       // project.setEntrepreneur_id(entrepreneur.getEntrepreneurId());
        // project.setEntrepreneur_id(1);
         Project savedProject = projectRepository.save(project);
         return  autoMapper.convertToDto(savedProject,ProjectDto.class);

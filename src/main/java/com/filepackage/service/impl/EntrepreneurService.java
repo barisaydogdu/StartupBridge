@@ -95,7 +95,31 @@ public class EntrepreneurService implements IEntrepreneurService {
         Entrepreneur savedEntrepreneur = entrepreneurRepository.save(entrepreneur);
         return autoMapper.convertToDto(savedEntrepreneur, EntrepreneurDto.class);
     }
+    public String  getAuthenticatedUsername() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println("Principal: " + principal); // Principal'i logla
 
+        if (principal instanceof UserDetails) {
+            return ((UserDetails) principal).getUsername();
+        } else {
+            return principal.toString();
+        }
+    }
+
+    public Entrepreneur getEntrepreneurByAuthenticatedUser() {
+        String username = getAuthenticatedUsername(); // JWT'den username aliniyor
+        System.out.println("Authenticated Username: " + username); // Log ekle
+
+        System.out.println("getEntrepreneurByAuthenticatedUser username: "+ username);
+        User user = userRepository.findByName(username).orElseThrow(() -> new RuntimeException("User not found"));
+        System.out.println("User Found: " + user); // Log ekle
+
+        System.out.println("Authenticated Username: " + username);
+        System.out.println("User: " + user);
+      //  System.out.println("Entrepreneur: " + entrepreneur);
+
+        return entrepreneurRepository.findByUser(user).orElseThrow(() -> new RuntimeException("Entrepreneur not found"));
+    }
 
     @Override
     public EntrepreneurDto update(Long entrepreneurId, EntrepreneurDto updatedEntrepreneurDto) {

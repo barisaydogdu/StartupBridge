@@ -48,7 +48,7 @@ public class SecurityConfig {
                                         "/register/**",
                                         "/ws/**",
                                         "/api/users/**",
-                                        "/projects",
+                                        "/projects/**",
                                         "/entrepreneurs/**",
                                         "/investors/**")
                                 .permitAll()

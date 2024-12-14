@@ -1,6 +1,7 @@
 package com.filepackage.service;
 
 import com.filepackage.dto.EntrepreneurDto;
+import com.filepackage.entity.Entrepreneur;
 
 import java.util.List;
 
@@ -14,4 +15,5 @@ public interface IEntrepreneurService {
     void delete(Long entrepreneurId);
 
     List<EntrepreneurDto> getAll();
+    Entrepreneur getEntrepreneurByAuthenticatedUser();
 }
