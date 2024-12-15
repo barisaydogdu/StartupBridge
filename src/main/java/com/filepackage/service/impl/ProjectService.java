@@ -1,6 +1,7 @@
 package com.filepackage.service.impl;
 
 import com.filepackage.Exception.ResourceNotFoundException;
+import com.filepackage.dto.EntrepreneurDto;
 import com.filepackage.dto.ProjectDto;
 import com.filepackage.dto.UserDto;
 import com.filepackage.entity.Entrepreneur;
@@ -11,6 +12,7 @@ import com.filepackage.repository.IProjectRepository;
 import com.filepackage.repository.IUserRepository;
 import com.filepackage.service.IProjectService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +28,7 @@ public class ProjectService  implements IProjectService<ProjectDto,Long>{
     @Autowired
     AutoMapper autoMapper;
     private IProjectRepository projectRepository;
+    private EntrepreneurService entrepreneurService;
 
 
     @Autowired
@@ -39,14 +42,28 @@ public class ProjectService  implements IProjectService<ProjectDto,Long>{
                 .orElseThrow(()-> new ResourceNotFoundException("Project does not exist with given id)"+projectId));
         return autoMapper.convertToDto(project, ProjectDto.class);
     }
-
-    @Override
+   /*  @Override
     public List<ProjectDto> getAll() {
         List<Project> projects=projectRepository.findAll();
 
         return projects.stream().map(project -> autoMapper.convertToDto(project,ProjectDto.class))
                 .collect(Collectors.toList());
+    }*/
+
+    @Override
+    public List<ProjectDto> getAll() {
+        List<Project> projects = projectRepository.findAll();
+
+        return projects.stream().map(project -> {
+            ProjectDto projectDto = autoMapper.convertToDto(project, ProjectDto.class);
+            if (project.getEntrepreneur() != null) {
+                EntrepreneurDto entrepreneurDto = autoMapper.convertToDto(project.getEntrepreneur(), EntrepreneurDto.class);
+                projectDto.setEntrepreneur(entrepreneurDto);
+            }
+            return projectDto;
+        }).collect(Collectors.toList());
     }
+
 
     @Override
     public void delete(Long projectId) {
@@ -73,7 +90,6 @@ public class ProjectService  implements IProjectService<ProjectDto,Long>{
 
     @Override
     public ProjectDto createProject(ProjectDto projectDto) {
-
         Entrepreneur entrepreneur = new Entrepreneur();
         //önce entitye sonra tekrardan dtoya çeviriyoruz
         Project project = autoMapper.convertToEntity(projectDto,Project.class);
@@ -82,4 +98,6 @@ public class ProjectService  implements IProjectService<ProjectDto,Long>{
         Project savedProject = projectRepository.save(project);
         return  autoMapper.convertToDto(savedProject,ProjectDto.class);
     }
+
+
 }

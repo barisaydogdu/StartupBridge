@@ -20,6 +20,7 @@ public class ProjectDto {
     private Long project_id;
 
     private Integer entrepreneur_id;
+   private EntrepreneurDto entrepreneur; // Entrepreneur bilgisi
 
     private  String project_name;
 

@@ -36,6 +36,7 @@ public class ProjectController {
     public ResponseEntity<ProjectDto> addProject(@RequestBody ProjectDto projectDto){
         Entrepreneur entrepreneur = entrepreneurService.getEntrepreneurByAuthenticatedUser();
         //projectDto.setEntrepreneur_id(entrepreneur.getEntrepreneurId());
+
         projectDto.setEntrepreneur_id(entrepreneur.getEntrepreneurId());
         ProjectDto savedProject = projectService.createProject(projectDto);
 
