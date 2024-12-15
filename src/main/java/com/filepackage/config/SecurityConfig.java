@@ -19,6 +19,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -37,8 +41,9 @@ public class SecurityConfig {
     {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(
-                        req->req.requestMatchers("/login/**","/register/**","/ws/**","/api/users/**","/projects","/entrepreneurs")
+                        req->req.requestMatchers("/login/**","/register/**","/ws/**","/api/users/**","/projects","/entrepreneurs",  "/blogs", "/blogs/**" )
                                 .permitAll()
                                 .requestMatchers("/admin_only/**","/app/**").hasAnyAuthority("ROLE_ADMIN")
                                 .anyRequest()
@@ -52,6 +57,8 @@ public class SecurityConfig {
                 //jwt tokenları filtreden geçirir ve filtre zincirine ekler.
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class).build();
     }
+
+
     @Bean
     public PasswordEncoder passwordEncoder()
     {
@@ -68,5 +75,18 @@ public class SecurityConfig {
         authProvider.setUserDetailsService(userDetailService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
+    }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept", "*"));
+        configuration.setAllowCredentials(true);
+        configuration.setExposedHeaders(Arrays.asList("Authorization"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

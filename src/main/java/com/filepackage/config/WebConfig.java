@@ -25,13 +25,29 @@ public class WebConfig implements WebMvcConfigurer {
             }
         };
     }*/
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**") // Tüm endpointler için
-                .allowedOrigins("http://localhost:3000/") // İzin verilen origin
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // İzin verilen HTTP metodları
-                .allowedHeaders("*") // Tüm başlıklar
-                .allowCredentials(true); // Kimlik bilgilerini destekler
-         }
-    }
+   /* @Override
+   public void addCorsMappings(CorsRegistry registry) {
+       registry.addMapping("/**")  // Tüm endpointler için
+               .allowedOrigins("http://localhost:3000")  // Sondaki slash'i kaldırdık
+               .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+               .allowedHeaders("*")
+               .exposedHeaders("*")  // Bu satırı ekledik
+               .allowCredentials(true)
+               .maxAge(3600);  // Preflight cache süresi
 
+
+    }*/
+
+
+        @Override
+        public void addCorsMappings(CorsRegistry registry) {
+            registry.addMapping("/**")
+                    .allowedOrigins("http://localhost:3000")
+                    .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                    .allowedHeaders("*")
+                    .exposedHeaders("*")
+                    .allowCredentials(true)
+                    .maxAge(3600);
+        }
+
+    }
