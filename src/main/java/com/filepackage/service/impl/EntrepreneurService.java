@@ -1,5 +1,6 @@
 package com.filepackage.service.impl;
 
+import com.filepackage.Exception.AccessDeniedException;
 import com.filepackage.Exception.ResourceNotFoundException;
 import com.filepackage.dto.EntrepreneurDto;
 import com.filepackage.entity.Entrepreneur;
@@ -94,12 +95,49 @@ public class EntrepreneurService implements IEntrepreneurService {
         Entrepreneur savedEntrepreneur = entrepreneurRepository.save(entrepreneur);
         return autoMapper.convertToDto(savedEntrepreneur, EntrepreneurDto.class);
     }
+    public String  getAuthenticatedUsername() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println("Principal: " + principal); // Principal'i logla
 
+        if (principal instanceof UserDetails) {
+            return ((UserDetails) principal).getUsername();
+        } else {
+            return principal.toString();
+        }
+    }
+
+    public Entrepreneur getEntrepreneurByAuthenticatedUser() {
+        String username = getAuthenticatedUsername(); // JWT'den username aliniyor
+        System.out.println("Authenticated Username: " + username); // Log ekle
+
+        System.out.println("getEntrepreneurByAuthenticatedUser username: "+ username);
+        User user = userRepository.findByName(username).orElseThrow(() -> new RuntimeException("User not found"));
+        System.out.println("User Found: " + user); // Log ekle
+
+        System.out.println("Authenticated Username: " + username);
+        System.out.println("User: " + user);
+      //  System.out.println("Entrepreneur: " + entrepreneur);
+
+        return entrepreneurRepository.findByUser(user).orElseThrow(() -> new RuntimeException("Entrepreneur not found"));
+    }
 
     @Override
     public EntrepreneurDto update(Long entrepreneurId, EntrepreneurDto updatedEntrepreneurDto) {
         Entrepreneur entrepreneur = entrepreneurRepository.findById(entrepreneurId)
                 .orElseThrow(() -> new ResourceNotFoundException("Entrepreneur not found with ID: " + entrepreneurId));
+        // su anki oturumdan kullaniciyi al
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null || !authentication.isAuthenticated()) {
+            throw new AccessDeniedException("Not authenticated");
+        }
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        User currentUser = userRepository.findByName(userDetails.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+            // kullanici sadece kendi profilini guncelleyebilir
+        if (!entrepreneur.getUser().getId().equals(currentUser.getId())){
+            throw new AccessDeniedException("You can only update your own profile");
+        }
 
         entrepreneur.setFirstName(updatedEntrepreneurDto.getFirstName());
         entrepreneur.setLastName(updatedEntrepreneurDto.getLastName());

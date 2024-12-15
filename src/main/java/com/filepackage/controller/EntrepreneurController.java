@@ -44,8 +44,8 @@ public class EntrepreneurController {
         entrepreneurService.delete(entrepreneurId);
         return ResponseEntity.ok("Entrepreneur deleted successfully");
     }
-
-    @PutMapping("/{id}")
+    //@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT})
+    @PutMapping("/{id}/edit")
     public ResponseEntity<EntrepreneurDto> updateEntrepreneur(
             @PathVariable("id") Long entrepreneurId,
             @RequestBody EntrepreneurDto updatedEntrepreneur) {

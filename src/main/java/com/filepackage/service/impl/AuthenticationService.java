@@ -5,6 +5,8 @@ import com.filepackage.entity.User;
 import com.filepackage.repository.IUserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -59,4 +61,6 @@ public class AuthenticationService {
         String token=jwtService.generateToken(user);
         return new AuthenticationResponse(token);
     }
+
+
 }

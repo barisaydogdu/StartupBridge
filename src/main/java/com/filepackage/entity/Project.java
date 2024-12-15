@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,8 +22,14 @@ public class Project {
     @Column(name = "project_id")
     private Long project_id;
 
-    @Column(name = "entrepreneur_id")
+   @Column(name = "entrepreneur_id")
     private Integer entrepreneur_id;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "entrepreneur_id", insertable = false, updatable = false)
+     private Entrepreneur entrepreneur;
+
+
 
     @Column(name = "project_name")
     private  String project_name;
@@ -45,10 +52,21 @@ public class Project {
     @Column(name = "created_at")
     private LocalDateTime created_at;
 
+   /* @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "entrepreneur_id", nullable = false)
+    private Entrepreneur entrepreneur;
+*/
+  /*  @OneToOne
+    @JoinColumn(name = "user_id", nullable = false) // `users` tablosundaki user_id ile ilişkilendirilir
+    private User user;*/
+
     @PrePersist
     protected void onCreate() {
         this.created_at = LocalDateTime.now();
     }
 
+    /*@ManyToOne
+    @JoinColumn(name = "entrepreneur_id", nullable = false)
+    private Entrepreneur entrepreneur; */
 }
 

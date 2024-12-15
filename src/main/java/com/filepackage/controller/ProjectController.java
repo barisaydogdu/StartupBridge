@@ -3,6 +3,8 @@ package com.filepackage.controller;
 
 import com.filepackage.dto.ProjectDto;
 import com.filepackage.dto.UserDto;
+import com.filepackage.entity.Entrepreneur;
+import com.filepackage.service.impl.EntrepreneurService;
 import com.filepackage.service.impl.ProjectService;
 import com.filepackage.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,12 @@ public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
+    private EntrepreneurService entrepreneurService;
+
+    public ProjectController(ProjectService projectService, EntrepreneurService entrepreneurService) {
+        this.projectService = projectService;
+        this.entrepreneurService = entrepreneurService;
+    }
 
     @GetMapping
     public ResponseEntity<List<ProjectDto>> getAllProjects() {
@@ -26,7 +34,13 @@ public class ProjectController {
     }
     @PostMapping
     public ResponseEntity<ProjectDto> addProject(@RequestBody ProjectDto projectDto){
+        Entrepreneur entrepreneur = entrepreneurService.getEntrepreneurByAuthenticatedUser();
+        //projectDto.setEntrepreneur_id(entrepreneur.getEntrepreneurId());
+
+        projectDto.setEntrepreneur_id(entrepreneur.getEntrepreneurId());
         ProjectDto savedProject = projectService.createProject(projectDto);
+
+        savedProject.setEntrepreneur_id(entrepreneur.getEntrepreneurId());
         return  new ResponseEntity<>(savedProject, HttpStatus.CREATED);
     }
 

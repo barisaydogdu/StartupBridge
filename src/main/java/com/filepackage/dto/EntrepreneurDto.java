@@ -11,7 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EntrepreneurDto {
-
     private Long entrepreneurId;
     private String firstName;
     private String lastName;

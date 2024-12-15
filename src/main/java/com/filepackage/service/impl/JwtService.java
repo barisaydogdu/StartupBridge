@@ -59,6 +59,7 @@ public class JwtService {
         String token=Jwts.builder()
                 .subject(user.getUsername()) //kullanici adini ekle
                 .claim("id",user.getId()) //kullanici idsini ekle
+                //.claim("role", user.getRole())
                 .issuedAt(new Date(System.currentTimeMillis()))//Token oluşturma tarihi
                 .expiration(new Date(System.currentTimeMillis()+24*60*60*1000))//Son kullanma tarihi 1 gün
                 .signWith(getSigninKey())//Token imzalama
@@ -70,12 +71,18 @@ public class JwtService {
         return extractClaim(token, claims -> claims.get("id", Long.class));
     }
 
+    //token icerisinden rolu cikarmak icin yazdigimiz fonksiyon
+    public String extractRole(String token) {
+        return extractClaim(token,claims -> claims.get("role",String.class));
+    }
+
     //İmza anahtarını al
     private SecretKey getSigninKey()
     {
         byte[] keyBytes= Decoders.BASE64URL.decode(SECRET_KEY); //Anahtarı BASE64 formatında çıkar
         return Keys.hmacShaKeyFor(keyBytes); //anahtarı algoritma için uygun hale getir.
     }
+
 
 
 }
