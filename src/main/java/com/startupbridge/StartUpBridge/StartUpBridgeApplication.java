@@ -15,6 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
 
+
 public class StartUpBridgeApplication {
 
 	public static void main(String[] args) {
@@ -22,3 +23,4 @@ public class StartUpBridgeApplication {
 	}
 
 }
+

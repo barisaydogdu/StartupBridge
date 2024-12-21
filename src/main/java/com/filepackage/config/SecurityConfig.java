@@ -21,6 +21,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -41,7 +45,11 @@ public class SecurityConfig {
     {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(
+<<<<<<< HEAD
+                        req->req.requestMatchers("/login/**","/register/**","/ws/**","/api/users/**","/projects","/entrepreneurs",  "/blogs", "/blogs/**" )
+=======
 
                         req->req.requestMatchers(
                                 "/login/**",
@@ -50,17 +58,12 @@ public class SecurityConfig {
                                         "/api/users/**",
                                         "/projects/**",
                                         "/entrepreneurs/**",
-                                        "/investors/**",
-                                        "/topic/messages/**",
-                                        "expertise/**",
-                                        "education/**",
-                                        "experiences/**",
-                                        "interestandvalues/**")
+                                        "/investors/**")
+>>>>>>> be2af1b58e1160e511c4829211be8b109ebe8cdc
                                 .permitAll()
                                 .requestMatchers("/admin_only/**","/app/**").hasAnyAuthority("ROLE_ADMIN")
                                 //.requestMatchers(HttpMethod.PUT,"/entrepreneurs/**/edit").authenticated()
                                 .requestMatchers(HttpMethod.PUT, "/entrepreneurs/**").authenticated() // Güncelleme sadece giriş yapmış kullanıcılar
-                                .requestMatchers(HttpMethod.GET, "/entrepreneurs/**").authenticated() // Güncelleme sadece giriş yapmış kullanıcılar
                                 .anyRequest()
                                 .authenticated()//diğer tüm istekler için doğrulama gerekir
                 )
@@ -72,6 +75,8 @@ public class SecurityConfig {
                 //jwt tokenları filtreden geçirir ve filtre zincirine ekler.
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class).build();
     }
+
+
     @Bean
     public PasswordEncoder passwordEncoder()
     {
@@ -88,5 +93,18 @@ public class SecurityConfig {
         authProvider.setUserDetailsService(userDetailService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
+    }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept", "*"));
+        configuration.setAllowCredentials(true);
+        configuration.setExposedHeaders(Arrays.asList("Authorization"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

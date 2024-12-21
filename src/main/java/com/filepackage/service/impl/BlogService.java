@@ -52,18 +52,21 @@ public class BlogService implements IBlogService<BlogDto, Long> {
     public BlogDto update(Long blogId, BlogDto updatedBlog) {
         Blog blog = blogRepository.findById(blogId)
                 .orElseThrow(() -> new ResourceNotFoundException("Blog does not exist with given id: " + blogId));
-        blog.setTitle(Integer.valueOf(updatedBlog.getTitle()));
+
+        blog.setTitle(updatedBlog.getTitle());
         blog.setContent(updatedBlog.getContent());
-        blog.setBlog_id(updatedBlog.getBlog_id());
         blog.setCategory(updatedBlog.getCategory());
         blog.setAuthor_id(updatedBlog.getAuthor_id());
-        blog.setCreated_at(updatedBlog.getCreated_at());
-        return updatedBlog;
+
+        Blog savedBlog = blogRepository.save(blog);
+        return autoMapper.convertToDto(savedBlog, BlogDto.class);
     }
 
     @Override
-    public BlogDto createBlog(BlogDto commentDto) {
-        return null;
+    public BlogDto createBlog(BlogDto blogDto) {
+        Blog blog = autoMapper.convertToEntity(blogDto, Blog.class);
+        Blog savedBlog = blogRepository.save(blog);
+        return autoMapper.convertToDto(savedBlog, BlogDto.class);
     }
 }
 
