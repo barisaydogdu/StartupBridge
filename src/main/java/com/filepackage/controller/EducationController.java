@@ -1,7 +1,9 @@
 package com.filepackage.controller;
 
 import com.filepackage.dto.EducationDto;
+import com.filepackage.entity.Entrepreneur;
 import com.filepackage.service.impl.EducationService;
+import com.filepackage.service.impl.EntrepreneurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +15,14 @@ import java.util.List;
 @RequestMapping("/education")
 public class EducationController {
 
-    private final EducationService educationService;
 
     @Autowired
-    public EducationController(EducationService educationService) {
+    private final EducationService educationService;
+    private EntrepreneurService entrepreneurService;
+
+    public EducationController(EducationService educationService,EntrepreneurService entrepreneurService) {
         this.educationService = educationService;
+        this.entrepreneurService = entrepreneurService;
     }
 
     @GetMapping
@@ -28,7 +33,11 @@ public class EducationController {
 
     @PostMapping
     public ResponseEntity<EducationDto> addEducation(@RequestBody EducationDto educationDto) {
+
+        Entrepreneur entrepreneur = entrepreneurService.getEntrepreneurByAuthenticatedUser();
+        educationDto.setEntrepreneurId(entrepreneur.getEntrepreneurId());
         EducationDto savedEducation = educationService.createEducation(educationDto);
+        savedEducation.setEntrepreneurId(entrepreneur.getEntrepreneurId());
         return new ResponseEntity<>(savedEducation, HttpStatus.CREATED);
     }
 

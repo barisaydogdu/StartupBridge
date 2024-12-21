@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "InterestandValues",schema = "public")
+@Table(name = "interestand_values",schema = "public")
 @AllArgsConstructor
 @NoArgsConstructor
 public class InterestandValues {
@@ -23,6 +23,15 @@ public class InterestandValues {
 
     @Column(name = "investor_id")
     private Integer investor_id;
+
+    /*@ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "investor_id", insertable = false, updatable = false)
+    private Investors investor;*/
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "investor_id", referencedColumnName = "investor_id",
+            insertable = false, updatable = false)
+    private Investors investor;
 
     @Column(name = "social_impact")
     private  String social_impact;

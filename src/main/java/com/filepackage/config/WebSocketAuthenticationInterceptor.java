@@ -26,7 +26,7 @@ public class WebSocketAuthenticationInterceptor implements ChannelInterceptor {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
     }
-//test
+    //test
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);

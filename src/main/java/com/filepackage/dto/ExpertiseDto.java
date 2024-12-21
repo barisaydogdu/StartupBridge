@@ -18,6 +18,8 @@ public class ExpertiseDto {
     private Long expertise_id;
 
     private Integer entrepreneur_id;
+    private EntrepreneurDto entrepreneur; // Entrepreneur bilgisi
+
 
     private  String skill_name;
 }

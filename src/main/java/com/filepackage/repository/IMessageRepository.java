@@ -16,4 +16,5 @@ public interface IMessageRepository extends JpaRepository<Message, Long> {
             "(m.sender.id = :userId2 AND m.receiver.id = :userId1) " +
             "ORDER BY m.timestamp ASC")
     List<Message> findConversation(@Param("userId1") Long userId1, @Param("userId2") Long userId2);
+
 }

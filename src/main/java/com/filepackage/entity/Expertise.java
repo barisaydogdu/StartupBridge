@@ -22,6 +22,10 @@ public class Expertise {
         @Column(name = "entrepreneur_id")
         private Integer entrepreneur_id;
 
+        @ManyToOne(fetch = FetchType.EAGER)
+        @JoinColumn(name = "entrepreneur_id", insertable = false, updatable = false)
+        private Entrepreneur entrepreneur;
+
         @Column(name = "skill_name")
         private String skill_name;
 

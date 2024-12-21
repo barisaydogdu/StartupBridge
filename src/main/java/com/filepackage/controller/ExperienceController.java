@@ -1,6 +1,8 @@
 package com.filepackage.controller;
 
 import com.filepackage.dto.ExperienceDto;
+import com.filepackage.entity.Entrepreneur;
+import com.filepackage.service.impl.EntrepreneurService;
 import com.filepackage.service.impl.ExperienceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +17,12 @@ public class ExperienceController {
 
     @Autowired
     private ExperienceService experienceService;
+    private EntrepreneurService entrepreneurService;
 
+    public ExperienceController(ExperienceService experienceService, EntrepreneurService entrepreneurService) {
+        this.entrepreneurService = entrepreneurService;
+        this.experienceService = experienceService;
+    }
 
     @GetMapping
     public ResponseEntity<List<ExperienceDto>> getAllExperiences() {
@@ -26,7 +33,11 @@ public class ExperienceController {
 
     @PostMapping
     public ResponseEntity<ExperienceDto> addExperience(@RequestBody ExperienceDto experienceDto) {
+        Entrepreneur entrepreneur = entrepreneurService.getEntrepreneurByAuthenticatedUser();
+
+        experienceDto.setEntrepreneur_id(entrepreneur.getEntrepreneurId());
         ExperienceDto savedExperience = experienceService.createExperience(experienceDto);
+        savedExperience.setEntrepreneur_id(entrepreneur.getEntrepreneurId());
         return new ResponseEntity<>(savedExperience, HttpStatus.CREATED);
     }
 

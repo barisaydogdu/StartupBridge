@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/messages")
@@ -34,7 +35,8 @@ public class MessageController {
     }
 
     // REST endpoint
-    @PostMapping("/send")
+    //@PostMapping("/send")
+    @PostMapping("api/messages/send")
     public Message sendMessageq(@RequestBody MessageDto messageDTO) {
         return processMessage(messageDTO);
     }
@@ -63,6 +65,13 @@ public class MessageController {
         // Save and return the message
         return messageRepository.save(message);
     }
-
+    //@GetMapping("/conversation/{userId1}/{userId2}")
+    @GetMapping("/topic/messages/conversation/{userId1}/{userId2}")
+    public List<Message> getConversation(
+            @PathVariable Long userId1,
+            @PathVariable Long userId2
+    ) {
+        return  messageService.getConversation(userId1,userId2);
+    }
     // Other methods...
 }

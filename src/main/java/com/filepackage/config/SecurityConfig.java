@@ -50,11 +50,17 @@ public class SecurityConfig {
                                         "/api/users/**",
                                         "/projects/**",
                                         "/entrepreneurs/**",
-                                        "/investors/**")
+                                        "/investors/**",
+                                        "/topic/messages/**",
+                                        "expertise/**",
+                                        "education/**",
+                                        "experiences/**",
+                                        "interestandvalues/**")
                                 .permitAll()
                                 .requestMatchers("/admin_only/**","/app/**").hasAnyAuthority("ROLE_ADMIN")
                                 //.requestMatchers(HttpMethod.PUT,"/entrepreneurs/**/edit").authenticated()
                                 .requestMatchers(HttpMethod.PUT, "/entrepreneurs/**").authenticated() // Güncelleme sadece giriş yapmış kullanıcılar
+                                .requestMatchers(HttpMethod.GET, "/entrepreneurs/**").authenticated() // Güncelleme sadece giriş yapmış kullanıcılar
                                 .anyRequest()
                                 .authenticated()//diğer tüm istekler için doğrulama gerekir
                 )

@@ -7,8 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 @RestController
 @RequestMapping("/entrepreneurs")
 public class EntrepreneurController {
@@ -33,12 +34,24 @@ public class EntrepreneurController {
         return new ResponseEntity<>(savedEntrepreneur, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
+   @GetMapping("/{id}")
     public ResponseEntity<EntrepreneurDto> getEntrepreneurById(@PathVariable("id") Long entrepreneurId) {
         EntrepreneurDto entrepreneurDto = entrepreneurService.getById(entrepreneurId);
         return ResponseEntity.ok(entrepreneurDto);
     }
 
+ /* @GetMapping("/{id}")
+  public ResponseEntity<Map<String, Object>> getEntrepreneurById(@PathVariable("id") Long entrepreneurId) {
+      EntrepreneurDto entrepreneurDto = entrepreneurService.getById(entrepreneurId);
+      Map<String, Object> response = new HashMap<>();
+      response.put("entrepreneurId", entrepreneurDto.getEntrepreneurId());
+      response.put("userId", entrepreneurDto.getUserId());  // User ID'yi ekledik
+      response.put("firstName", entrepreneurDto.getFirstName());
+      response.put("lastName", entrepreneurDto.getLastName());
+      // ... diğer alanlar
+      return ResponseEntity.ok(response);
+  }
+*/
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteEntrepreneur(@PathVariable("id") Long entrepreneurId) {
         entrepreneurService.delete(entrepreneurId);

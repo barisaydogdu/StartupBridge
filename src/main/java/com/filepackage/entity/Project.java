@@ -29,8 +29,6 @@ public class Project {
     @JoinColumn(name = "entrepreneur_id", insertable = false, updatable = false)
      private Entrepreneur entrepreneur;
 
-
-
     @Column(name = "project_name")
     private  String project_name;
 

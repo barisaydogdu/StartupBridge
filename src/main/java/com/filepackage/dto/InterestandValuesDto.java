@@ -17,9 +17,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InterestandValuesDto {
-    private Long interesr_id;
+    private Long interest_id;
 
-    private Long investor_id;
+    private Integer investor_id;
+    private InvestorsDto investor;
 
     private  String social_impact;
 

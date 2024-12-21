@@ -25,7 +25,7 @@ public class ChatController {
     private final IUserRepository userRepository;
     private final MessageService messageService;
 
-    @MessageMapping("/chat.sendMessage")
+    @MessageMapping("/app/chat.sendMessage")
     public void sendMessage(@Payload ChatMessage chatMessage, Message<?> message) {
         // Mesajın header'larından Principal nesnesini alın
         Principal principal = message.getHeaders().get(SimpMessageHeaderAccessor.USER_HEADER, Principal.class);
@@ -76,6 +76,9 @@ public class ChatController {
         // Alıcıya gönderilecek mesajda gönderenin adını ayarlayın
         chatMessage.setSenderName(sender.getName());
 
+        // Her iki kullanıcıya da mesajı gönder
+        messagingTemplate.convertAndSend("/topic/messages/" + sender.getId(), chatMessage);
+        messagingTemplate.convertAndSend("/topic/messages/" + receiver.getId(), chatMessage);
         // Mesajı alıcıya gönderin
        /* messagingTemplate.convertAndSendToUser(
                 receiver.getName(), "/queue/messages", chatMessage);*/
@@ -86,7 +89,7 @@ public class ChatController {
         messagingTemplate.convertAndSend("/topic/messages/" + sender.getId(), chatMessage);
 
     }
-    @MessageMapping("/chat.privateMessage")
+   /* @MessageMapping("/chat.privateMessage")
     public void sendPrivateMessage(@Payload ChatMessage chatMessage, Principal principal) {
         String senderName = principal.getName();
         Long receiverId = chatMessage.getReceiverId();
@@ -106,6 +109,44 @@ public class ChatController {
 
             // Her iki kullanıcıya mesaj gönderme
             messagingTemplate.convertAndSend(privateChannel, chatMessage);
+        }
+    }*/
+   // İki kullanıcı ID'sinden benzersiz bir kanal ID'si oluştur
+   private String createChannelId(Long id1, Long id2) {
+       return id1 < id2 ?
+               String.format("chat_%d_%d", id1, id2) :
+               String.format("chat_%d_%d", id2, id1);
+   }
+
+    @MessageMapping("/chat.privateMessage")
+    public void sendPrivateMessage(@Payload ChatMessage chatMessage, Principal principal) {
+        String senderName = principal.getName();
+        Long receiverId = chatMessage.getReceiverId();
+        User sender = userRepository.findByName(senderName).orElse(null);
+        User receiver = userRepository.findById(receiverId).orElse(null);
+        System.out.println("private channel icindeki senderID :" + sender.getId());
+        System.out.println("private channel icindeki receiverID :" +receiverId );
+        String channelId = createChannelId(sender.getId(), receiverId);
+
+        if (sender != null && receiver != null) {
+            // Özel kanal oluştur
+            String privateChannel = "/topic/messages/" + sender.getId() + "_" + receiver.getId();
+
+            // Mesajı kaydet
+            com.filepackage.entity.Message messageEntity = new com.filepackage.entity.Message();
+            messageEntity.setContent(chatMessage.getContent());
+            messageEntity.setSender(sender);
+            messageEntity.setReceiver(receiver);
+            messageService.saveMessage(messageEntity);
+
+            // Mesajı özel kanala gönder
+            messagingTemplate.convertAndSend(privateChannel, chatMessage);
+
+            // Alıcı için ters yönde de bir kanal oluştur
+            String reverseChannel = "/topic/messages/" + receiver.getId() + "_" + sender.getId();
+//            messagingTemplate.convertAndSend(reverseChannel, chatMessage);
+            messagingTemplate.convertAndSend("/topic/" + channelId, chatMessage);
+
         }
     }
 

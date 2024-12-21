@@ -3,6 +3,7 @@ package com.filepackage.service.impl;
 import com.filepackage.Exception.AccessDeniedException;
 import com.filepackage.Exception.ResourceNotFoundException;
 import com.filepackage.dto.InvestorsDto;
+import com.filepackage.entity.Entrepreneur;
 import com.filepackage.entity.Investors;
 import com.filepackage.entity.User;
 import com.filepackage.mapper.AutoMapper;
@@ -106,5 +107,31 @@ public class InvestorsService implements IInvestorsService<InvestorsDto, Long> {
 
         Investors savedInvestors = investorsRepository.save(investors);
         return autoMapper.convertToDto(savedInvestors, InvestorsDto.class);
+    }
+
+    public String  getAuthenticatedUsername() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println("Principal: " + principal); // Principal'i logla
+
+        if (principal instanceof UserDetails) {
+            return ((UserDetails) principal).getUsername();
+        } else {
+            return principal.toString();
+        }
+    }
+
+    public Investors getInvestorByAuthenticatedUser() {
+        String username = getAuthenticatedUsername(); // JWT'den username aliniyor
+        System.out.println("Authenticated Username: " + username); // Log ekle
+
+        System.out.println("getInvestorByAuthenticatedUser username: "+ username);
+        User user = userRepository.findByName(username).orElseThrow(() -> new RuntimeException("User not found"));
+        System.out.println("User Found: " + user); // Log ekle
+
+        System.out.println("Authenticated Username: " + username);
+        System.out.println("User: " + user);
+        //  System.out.println("Entrepreneur: " + entrepreneur);
+
+        return investorsRepository.findByUser(user).orElseThrow(() -> new RuntimeException("Investor not found"));
     }
 }

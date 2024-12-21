@@ -22,8 +22,12 @@ public class Experience {
     @Column(name = "experience_id")
     private Long experience_id;
 
-    @Column(name = "enterpreneur_id")
-    private Integer enterpreneur_id;
+    @Column(name = "entrepreneur_id")
+    private Integer entrepreneur_id;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "entrepreneur_id", insertable = false, updatable = false)
+    private Entrepreneur entrepreneur;
 
     @Column(name = "company_name")
     private  String company_name;

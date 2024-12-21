@@ -20,6 +20,8 @@ public class ExperienceDto {
 
     private Integer entrepreneur_id;
 
+    private EntrepreneurDto entrepreneur; // Entrepreneur bilgisi
+
     private  String company_name;
 
     private String position;

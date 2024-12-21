@@ -22,6 +22,10 @@ public class Education {
     @Column(name = "entrepreneur_id", nullable = false)
     private Integer entrepreneurId;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "entrepreneur_id", insertable = false, updatable = false)
+    private Entrepreneur entrepreneur;
+
     @Column(name = "school_name", length = 100)
     private String schoolName;
 

@@ -23,7 +23,7 @@ public class InvestorsDto {
 
     private  String last_name;
 
-  private String profile_picture;
+    private String profile_picture;
 
     private String email;
 

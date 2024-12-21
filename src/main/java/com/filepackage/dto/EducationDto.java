@@ -13,6 +13,7 @@ public class EducationDto {
 
     private Long educationId;
     private Integer entrepreneurId;
+    private EntrepreneurDto entrepreneur;
     private String schoolName;
     private String degree;
     private Integer graduationYear;
