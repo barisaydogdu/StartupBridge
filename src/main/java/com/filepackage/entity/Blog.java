@@ -32,6 +32,10 @@ public class Blog {
     @Column(name = "author_id")
     private Long author_id;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "author_id", insertable = false, updatable = false)
+    private User authorUser;
+
     @Column(name = "created_at")
     private LocalDateTime created_at;
 

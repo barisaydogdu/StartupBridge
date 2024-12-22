@@ -49,8 +49,12 @@ public class SecurityConfig {
                                         "/ws/**",
                                         "/api/users/**",
                                         "/projects/**",
+                                        "/blogs/**",
                                         "/entrepreneurs/**",
-                                        "/investors/**")
+                                        "experience/**",
+                                        "/investors/**",
+                                        "interestandvalues/**",
+                                        "investment-portfolios/**")
                                 .permitAll()
                                 .requestMatchers("/admin_only/**","/app/**").hasAnyAuthority("ROLE_ADMIN")
                                 //.requestMatchers(HttpMethod.PUT,"/entrepreneurs/**/edit").authenticated()

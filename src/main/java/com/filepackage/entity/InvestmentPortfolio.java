@@ -24,6 +24,10 @@ public class InvestmentPortfolio {
     @Column(name = "investor_id", nullable = false)
     private Integer investorId;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "investor_id", insertable = false, updatable = false)
+    private Investors investors;
+
     @Column(name = "invested_company_name", length = 100)
     private String investedCompanyName;
 

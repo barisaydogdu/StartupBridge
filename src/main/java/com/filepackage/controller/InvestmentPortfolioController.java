@@ -1,7 +1,11 @@
 package com.filepackage.controller;
 
 import com.filepackage.dto.InvestmentPortfolioDto;
+import com.filepackage.entity.Entrepreneur;
+import com.filepackage.entity.Investors;
+import com.filepackage.service.impl.EntrepreneurService;
 import com.filepackage.service.impl.InvestmentPortfolioService;
+import com.filepackage.service.impl.InvestorsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +18,12 @@ import java.util.List;
 public class InvestmentPortfolioController {
 
     private final InvestmentPortfolioService investmentPortfolioService;
+    private InvestorsService investorsService;
 
     @Autowired
-    public InvestmentPortfolioController(InvestmentPortfolioService investmentPortfolioService) {
+    public InvestmentPortfolioController(InvestmentPortfolioService investmentPortfolioService,InvestorsService investorsService) {
         this.investmentPortfolioService = investmentPortfolioService;
+        this.investorsService = investorsService;
     }
 
     @GetMapping
@@ -28,7 +34,11 @@ public class InvestmentPortfolioController {
 
     @PostMapping
     public ResponseEntity<InvestmentPortfolioDto> addPortfolio(@RequestBody InvestmentPortfolioDto portfolioDto) {
+        Investors investors = investorsService.getInvestorByAuthenticatedUser();
+
+        portfolioDto.setInvestorId(investors.getInvestor_id());
         InvestmentPortfolioDto savedPortfolio = investmentPortfolioService.createInvestmentPortfolio(portfolioDto);
+        savedPortfolio.setInvestorId(investors.getInvestor_id());
         return new ResponseEntity<>(savedPortfolio, HttpStatus.CREATED);
     }
 

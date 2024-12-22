@@ -15,6 +15,7 @@ public class InvestmentPortfolioDto {
 
     private Long portfolioId;
     private Integer investorId;
+    private InvestorsDto investors; // Investors bilgisi
     private String investedCompanyName;
     private LocalDate investmentDate;
     private String description;
