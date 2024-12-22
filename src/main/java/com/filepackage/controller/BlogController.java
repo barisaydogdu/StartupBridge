@@ -51,6 +51,7 @@ public class BlogController {
     public ResponseEntity<BlogDto> addBlog(@RequestBody BlogDto blogDto) {
         try {
             User user = getAuthenticatedUser();
+
             blogDto.setAuthor_id(user.getId());
             System.out.println("Received blog data: " + blogDto); // Debug için log
             BlogDto savedBlog = blogService.createBlog(blogDto);

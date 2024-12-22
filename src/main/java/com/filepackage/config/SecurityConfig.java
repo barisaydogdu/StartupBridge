@@ -51,10 +51,13 @@ public class SecurityConfig {
                                         "/projects/**",
                                         "/blogs/**",
                                         "/entrepreneurs/**",
-                                        "experience/**",
+                                        "/experiences/**",
                                         "/investors/**",
-                                        "interestandvalues/**",
-                                        "investment-portfolios/**")
+                                        "/education/**",
+                                        "/expertise/**",
+                                        "/interestandvalues/**",
+                                        "/investment-portfolios/**",
+                                        "/comments/**")
                                 .permitAll()
                                 .requestMatchers("/admin_only/**","/app/**").hasAnyAuthority("ROLE_ADMIN")
                                 //.requestMatchers(HttpMethod.PUT,"/entrepreneurs/**/edit").authenticated()
